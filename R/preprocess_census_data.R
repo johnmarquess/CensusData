@@ -230,7 +230,8 @@ age_lookup_std <- age_lookup %>%
         if (!is.na(age_label_col)) rename(., age_group_label = !!sym(age_label_col)) else .
     } %>%
     mutate(
-        age_group_label = gsub("^Age groups: ", "", age_group_label)
+        age_group_label = gsub("^Age groups: ", "", age_group_label),
+        age_group_label = gsub("years and over$", "plus", age_group_label)
     ) %>%
     distinct(age_group, .keep_all = TRUE)
 
@@ -370,7 +371,7 @@ message("\nPreview of denormalized health conditions data:")
 print(head(health_analysis, 10))
 
 
-health_analysis %>% View()
+
 # ============================================================================
 # Save processed data
 # ============================================================================
@@ -412,4 +413,5 @@ message("Saved: qld_lookups.rds")
 message("\nProcessed data saved to: ", output_path)
 message("Preprocessing complete!")
 
+health_analysis %>% View()
 health_analysis %>% count(age_group_label)
